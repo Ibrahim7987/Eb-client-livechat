@@ -88,7 +88,8 @@ const CollectionList: FC<CollectionListComponentProps> = (props) => {
         searchTxt && setLoading(false);
       })
       .catch((e) => {
-        setFetching(false)
+        if(e.status == 403)
+          setFetching(false)
         console.log(e);
       });
   }, []);
@@ -146,6 +147,8 @@ const CollectionList: FC<CollectionListComponentProps> = (props) => {
           response.data.length == 0 && !searchTxt && setFetching(false);
         })
         .catch((e) => {
+          if(e.status == 403)
+            setFetching(false)
           console.log(e);
         });
     }, 2000); // Adjust the delay time as needed
