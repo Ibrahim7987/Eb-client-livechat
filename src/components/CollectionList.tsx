@@ -88,6 +88,7 @@ const CollectionList: FC<CollectionListComponentProps> = (props) => {
         searchTxt && setLoading(false);
       })
       .catch((e) => {
+        setFetching(false)
         console.log(e);
       });
   }, []);
@@ -333,17 +334,16 @@ const CollectionList: FC<CollectionListComponentProps> = (props) => {
                         </div>
                       </>
                     ) : (
-                      <>
-                        <img
-                          className="pad-no-content-img"
-                          src="https://d2p078bqz5urf7.cloudfront.net/cloud/assets/livechat/no-articles-yet.svg"
-                          alt="No articles"
-                        />
-                        <h2 className="pad-content-title">No Articles</h2>
-                        <p className="pad-text">
-                          Access to the articles is currently unavailable.
-                        </p>
-                      </>
+                      <div className="no_messages_content">
+
+                        <div className="no_messages">
+              <img
+                className="pad-no-content-img"
+                src="https://d2p078bqz5urf7.cloudfront.net/cloud/assets/img/404-img/penguin.png"
+              />
+              <h2 className="pad-content-title">This help center is temporarily unavailable</h2>
+            </div>
+                      </div>
                     )
                   ) : (
                     <>
