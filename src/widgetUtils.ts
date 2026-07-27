@@ -8,55 +8,55 @@ export function loadLivechatWidget(prefs: any, type: string) {
         return;
     }
 
-                if (prefs && type === "unified-inbox") {
-                    Array.prototype.forEach.call(prefs, function (channel) {
-                        var widgetContainer = document.querySelector(
-                            '[class^="engagebay-chat-widget"][data-id="' + channel.id + '"]'
-                        );
+    if (prefs && type === "unified-inbox") {
+        Array.prototype.forEach.call(prefs, function (channel) {
+            var widgetContainer = document.querySelector(
+                '[class^="engagebay-chat-widget"][data-id="' + channel.id + '"]'
+            );
 
-                        if (channel.systemCreated && !channel.meta.deactivated) {
-                            selectedChannel = channel;
-                            if (widgetContainer) {
-                                channelId = channel.id;
-                                loadChat(widgetContainer, channel, type);
-                            }
-                        } else if (
-                            !channel.meta.deactivated &&
-                            widgetContainer &&
-                            (!selectedChannel || selectedChannel.systemCreated)
-                        ) {
-                            selectedChannel = channel;
-                            channelId = channel.id;
-                            loadChat(widgetContainer, channel, type);
-                        }
-                    });
+            if (channel.systemCreated && !channel.meta.deactivated) {
+                selectedChannel = channel;
+                if (widgetContainer) {
+                    channelId = channel.id;
+                    loadChat(widgetContainer, channel, type);
                 }
+            } else if (
+                !channel.meta.deactivated &&
+                widgetContainer &&
+                (!selectedChannel || selectedChannel.systemCreated)
+            ) {
+                selectedChannel = channel;
+                channelId = channel.id;
+                loadChat(widgetContainer, channel, type);
+            }
+        });
+    }
 
-                if ((!channelId && selectedChannel) || type === "legacy-chat") {
-                    var widgetContainer = createEle("div", {
-                        id: "engagebay-container",
-                        "data-id": selectedChannel ? selectedChannel.id : prefs.id,
-                        "class": "engagebay-namespace engagebay-chat-widget"
-                    });
-                    document.body.appendChild(widgetContainer);
-                    if (prefs.botPrefs && prefs.botPrefs.length > 0) {
-                        // Send each `bot to the web rule validator
-                        for (var i = 0; i < prefs.botPrefs.length; i++) {
-                            try {
-                                // do not validate rules in preview
-                                PARENT_WINDOW.EhGrabbers.validateRules(prefs.botPrefs[i]);
-                                // As valid rule, Setting matched pref as global to access in livechat
-                                prefs.matchedBotPrefs = prefs.botPrefs[i];
-                                break;
-                            } catch (e) {
-                                console.log(e);
-                            }
-                        }
-                    }
-                    if (widgetContainer) {
-                        loadChat(widgetContainer, selectedChannel || prefs, type);
-                    }
+    if ((!channelId && selectedChannel) || type === "legacy-chat") {
+        var widgetContainer = createEle("div", {
+            id: "engagebay-container",
+            "data-id": selectedChannel ? selectedChannel.id : prefs.id,
+            "class": "engagebay-namespace engagebay-chat-widget"
+        });
+        document.body.appendChild(widgetContainer);
+        if (prefs.botPrefs && prefs.botPrefs.length > 0) {
+            // Send each `bot to the web rule validator
+            for (var i = 0; i < prefs.botPrefs.length; i++) {
+                try {
+                    // do not validate rules in preview
+                    PARENT_WINDOW.eh_validate_rules(prefs.botPrefs[i]);
+                    // As valid rule, Setting matched pref as global to access in livechat
+                    prefs.matchedBotPrefs = prefs.botPrefs[i];
+                    break;
+                } catch (e) {
+                    console.log(e);
                 }
+            }
+        }
+        if (widgetContainer) {
+            loadChat(widgetContainer, selectedChannel || prefs, type);
+        }
+    }
 };
 
 function createEle (tag: string, attrs: any) {
@@ -151,23 +151,23 @@ function getNewPrefsScriptTag(prefs: any) {
 }
 
 function getVisitorKey () {
-		var name = (window as any).EngHub_Storage.id_pref_name;
-		return (window as any).EhGrabberVisitor.getVisitorPref("", name);
-	}
+	var name = (window as any).EngHub_Storage.id_pref_name;
+	return (window as any).EhGrabberVisitor.getVisitorPref("", name);
+}
 
 function getUnifiedInboxURL () {
-        var unifiedInboxURL = "https://backends.engagebay.com/";
+    var unifiedInboxURL = "https://backends.engagebay.com/";
     
-            try {
-                if ((window as any).EhAccount.getVersion()) {
-                    unifiedInboxURL = "https://backends-" + (window as any).EhAccount.getVersion() + ".engagebay.com/";
-                    if ((window as any).EhAccount.getVersion() == "localhost") {
-                        unifiedInboxURL = "http://localhost:8091/";
-                    }
-                }
-            } catch (error) {
+    try {
+        if ((window as any).EhAccount.getVersion()) {
+            unifiedInboxURL = "https://backends-" + (window as any).EhAccount.getVersion() + ".engagebay.com/";
+            if ((window as any).EhAccount.getVersion() == "localhost") {
+                unifiedInboxURL = "http://localhost:8091/";
             }
-            return unifiedInboxURL;
+        }
+    } catch (error) {
+    }
+    return unifiedInboxURL;
 };
 
 
