@@ -3,7 +3,7 @@ import { PARENT_WINDOW } from "./globals";
 
 export function loadLivechatWidget(prefs: any, type: string) {
     var selectedChannel: any, channelId: any;
-    if (type === "legacy-chat" && (window as any).EhAccount.isLivechatDisabled()) {
+    if ((window as any).EhAccount.isLivechatDisabled()) {
         (window as any).EhLog.log("Livechat is disabled on this");
         return;
     }
