@@ -3,10 +3,6 @@ import { PARENT_WINDOW } from "./globals";
 
 export function loadLivechatWidget(prefs: any, type: string) {
     var selectedChannel: any, channelId: any;
-    if ((window as any).EhAccount.isLivechatDisabled()) {
-        (window as any).EhLog.log("Livechat is disabled on this");
-        return;
-    }
 
     if (prefs && type === "unified-inbox") {
         Array.prototype.forEach.call(prefs, function (channel) {
