@@ -1,7 +1,7 @@
 import { EngagebayChatWidgetManager } from "./EngagebayChatWidgetManager";
 import { PARENT_WINDOW } from "./globals";
 
-export function loadLivechatWidget(prefs: any, type: string) {
+export function load_livechat_widget(prefs: any, type: string) {
     var selectedChannel: any, channelId: any;
 
     if (prefs && type === "unified-inbox") {
