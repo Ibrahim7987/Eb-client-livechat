@@ -1,30 +1,30 @@
 import axios from "axios";
-import { loadLivechatWidget } from "./widgetUtils";
+import { load_livechat_widget } from "./widgetUtils";
 
 
 (() => {
 
-    var channelIds: string[] = [];
+    var channel_ids: string[] = [];
     try {        
         var widgetContainers = document.querySelectorAll('[class^="engagebay-chat-widget"]');
 
         console.log("widgetContainers ", widgetContainers);
 
         Array.prototype.forEach.call(widgetContainers, function (element) {
-            channelIds.push(element.getAttribute("data-id"));
+            channel_ids.push(element.getAttribute("data-id"));
         });
 
         axios(
             "https://eb-webhooks.engagebay.com/channel/get-active-channel-by-ids?apiKey=" +
             (window as any).EhAccount.getKey() +
             "&channelIds=" +
-            channelIds.join(","), {}
+            channel_ids.join(","), {}
         )
         .then((response: any) => {
             const channelData = response.data;
             if (!channelData || (!Array.isArray(channelData) && channelData.widget && !channelData.widget.chatEnabled))
                 return;
-            loadLivechatWidget(channelData, !Array.isArray(channelData) && channelData.widget ? "legacy-chat" : "unified-inbox");
+            load_livechat_widget(channelData, !Array.isArray(channelData) && channelData.widget ? "legacy-chat" : "unified-inbox");
             
         })
         .catch((error) => {
