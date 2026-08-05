@@ -452,22 +452,26 @@ const Conversation = (props: ConversationProps) => {
       };
     }
     submitSessionEvent(NEW_SESSION_URL_PATH, session, (response: any) => {
-      // if (newChat) {
-      // Get session
       let newNession = response.data as ChatSessionPaylodObj;
       updateAndOpenSession(newNession);
       setSession(newNession);
       setSessionStoragePrefs(OPENED_CHAT, newNession.id);
-      // } else {
-      //   updateMessageList(response.data);
-      // }
+      try {
+
+        const windowRef = (typeof (window as any).EbTrackAPI !== "undefined") ? window : (window as any).parent;
+        newNession && newNession.contact_id && windowRef.EbTrackAPI.getInstance && windowRef.EbTrackAPI.getInstance(function (ref: any) {
+            console.log("Add contact to EngageBay from calendar");
+            ref.addContact({
+                id: newNession.contact_id,
+                source_type: "LIVECHAT",
+                source_id: newNession.id,
+            }, true);
+        });
+      } catch (e) {
+        console.warn(e);
+      }
     });
 
-    // Submit form
-    // setEnableChatFooter(true);
-    // Regular flow
-
-    // connectToAgent();
   };
 
   const fileUploadCallback = (status: string, file: any) => {
