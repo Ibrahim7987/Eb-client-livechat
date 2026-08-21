@@ -39,7 +39,7 @@ export const PARENT_WINDOW_LIVECHAT_REF = PARENT_WINDOW
 //   ? PARENT_WINDOW_LIVECHAT_REF.ref.settings
 //   : undefined;
 
-const REQUEST_PREFIX_PATH = "api/support/jsclient/inbox";
+const REQUEST_PREFIX_PATH = "api/support/v1/jsclient/inbox";
 
 export const NEW_SESSION_URL_PATH: string =
   REQUEST_PREFIX_PATH + "/new-conversation";
